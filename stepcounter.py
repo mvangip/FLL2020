@@ -26,24 +26,29 @@ right_motor = Motor(Port.C)
 # Initialize the drive base.
 robot = DriveBase(left_motor, right_motor, wheel_diameter=55.5, axle_track=104)
 
-
+#moves robot forward 700 millimeters towards the mission
 robot.straight(700)
+#beeps so i know it stopped
 ev3.speaker.beep()
 Stop.BRAKE
 
+#pushes the step counter forward
 robot.straight(100)
 Stop.BRAKE
 ev3.speaker.beep()
 
+#moves backward and forwards just incase its stuck
 robot.straight(-50)
 robot.straight(10)
 Stop.BRAKE
 ev3.speaker.beep()
 
+#moves even more forward since im aiming for blue
 robot.straight(300)
 Stop.BRAKE
 ev3.speaker.beep()
 
+#goes back to base
 robot.straight(-1500)
 ev3.speaker.beep
 Stop.BRAKE
