@@ -7,7 +7,6 @@ from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 
-import sleep
 
 # This program requires LEGO EV3 MicroPython v2.0 or higher.
 # Click "Open user guide" on the EV3 extension tab for more information.
@@ -15,63 +14,127 @@ import sleep
 
 # Create your objects here.
 ev3 = EV3Brick()
-
-
-# Assign variables to the right and left motor 
-right_motor = Motor(Port.B)
 left_motor = Motor(Port.C)
+right_motor = Motor(Port.B)
 medium_motor = Motor(Port.A)
-attachment_motor = Motor(Port.D)
+front_largeMotor = Motor(Port.D)
 wheel_diameter = 56
-axle_track = 114
+axle_track = 115
 
-# Create a DriveBase object. The axle_track and wheel_diameter are needed to correct
-# the speed when the robot is moving
 robot = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
+# Initialize the color sensor.
+line_sensor = ColorSensor(Port.S2)
 
-# HEALTH UNITS MISSION (RETRIEVING FROM DANCE FLOOR AND DUMPING THEM INTO THE REPLAY LOGO)
+robot.straight(110)
 
-# robot goes straight for 300 mm
-robot.straight(300)
+# Calculate the light threshold. Choose values based on your measurements.
+BLACK = 9
+WHITE = 85
+threshold = (BLACK + WHITE) / 2
 
-# robot turns left towards the boccia mission
-robot.turn(-60)
+# Set the drive speed at 100 millimeters per second.
+DRIVE_SPEED = 100
 
-# robot goes straight to retrieve the health unit
-robot.straight(400)
+# Set the gain of the proportional line controller. This means that for every
+# percentage point of light deviating from the threshold, we set the turn
+# rate of the drivebase to 1.2 degrees per second.
 
-# robot takes a slight right turn to line the attachment up with the health unit
-robot.turn(45)
+# For example, if the light value deviates from the threshold by 10, the robot
+# steers at 10*1.2 = 12 degrees per second.
+PROPORTIONAL_GAIN = 1.2
+runWhile = True
+# Start following the line endlessly.
+while runWhile:
+    # Calculate the deviation from the threshold.
+    deviation = line_sensor.reflection() - threshold
 
-# robot moves straight to get closer to the health unit
-robot.straight(130)
+    # Calculate the turn rate.
+    turn_rate = PROPORTIONAL_GAIN * deviation
 
-# large motor attachment in the front moves downwards so the beam can go inside the loop of the health unit
-attachment_motor.run_angle(40, 120)
+    # Set the drive base speed and turn rate.
+    robot.drive(DRIVE_SPEED, turn_rate)
 
-# robot goes straight just a little big for the attachment to catch the health unit's looped wire
-robot.straight(45)
+    if robot.distance() == 1400: 
+        runWhile = False
 
-# large motor attachment then moves more downwards to trap the health unit in its clutches
-attachment_motor.run_angle(40, 30)
+# robot stops after finishing up line following code
+robot.stop(Stop.BRAKE)
 
-# robot goes backwards all the way into base
-robot.straight(-915)
+# robot turns after finishing up line following code
+robot.turn(-103.5)
 
-# robot waits for 5 seconds before it attempts the 'dumping' of the health units
-robot.sleep(5)
+# robot goes straight as it heads towards the mission
+robot.straight(138)
 
-# robot goes straight towards the RePlay logo
-robot.straight(640)
+# robot turns right for 73 degrees
+robot.turn(73)
 
-# large motor attachment goes down to release the health units into the RePlay logo
-attachment_motor.run_angle(100, 140)
+# robot goes straight towards the mission to line the attachment to the wheel
+robot.straight(93)
 
-# large motor attachment goes back up after releasing health units into the RePlay logo
-attachment_motor.run_angle(100, -140)
+# large motor attachment goes down to trap the wheel in
+front_largeMotor.run_angle(60, 165)
 
-# robot takes a slight backwards left turn 
-robot.turn(-20)
+# robot moves backwards to bring wheel outside of the large circle
+robot.straight (-100)
 
-# robot goes backwards as it backs away from the RePlay logo and heads back to base
-robot.straight(-620)
+# large motor releases the trapped tire
+front_largeMotor.run_angle(60, -148)
+
+# robot moves straight to get closer the wheel
+robot.straight (38)
+
+# robot turns so the wheel can get into the smaller target
+robot.turn (-33)
+
+robot.stop (Stop.BRAKE)
+
+# robot goes backwards to leave the target and the wheel inside of it
+robot.straight (-110)
+
+# robot turns towards the weight machine
+robot.turn (-32)
+
+
+# going straight from row machine to weight machine
+robot.straight(498)
+
+# stopping for accuracy.
+robot.stop(Stop.BRAKE)
+
+# turning towards the weight machine.
+robot.turn(20)
+
+# robot goes straight to get closer to the weight machine
+robot.straight(78)
+
+# large motor going down to complete mission (weight machine).
+front_largeMotor.run_angle(120, 140)
+
+
+# going backwards away from the weight machine
+robot.straight(-100)
+
+# large motor goes back up 
+# front_largeMotor.run_angle(50, -100)
+
+
+## The robot is turning away from the Weight Machine and towards the Boccia.  
+robot.turn(-117)
+
+## The robot is moving straight towards the Boccia Mission.
+robot.straight(290)
+
+# the robot turns right to turn the aim boccia with the yellow axle on the bottom of the bot. 
+robot.turn(60)
+
+
+# robot.straight(-10)
+
+# robot.turn(15)
+# front_largeMotor.run_angle(50, 60)
+
+# robot.straight(55)
+
+# the large motor goes up to push the yellow cube down into the target area.
+front_largeMotor.run_angle(50, -50)
