@@ -66,17 +66,17 @@ robot.turn(-103.5)
 # robot goes straight as it heads towards the mission
 robot.straight(138)
 
-# robot turns right for 73 degrees
-robot.turn(73)
+# robot turns right for 80 degrees
+robot.turn(90)
 
 # robot goes straight towards the mission to line the attachment to the wheel
-robot.straight(93)
+robot.straight(97)
 
 # large motor attachment goes down to trap the wheel in
-front_largeMotor.run_angle(60, 165)
+front_largeMotor.run_angle(60, 171)
 
 # robot moves backwards to bring wheel outside of the large circle
-robot.straight (-100)
+robot.straight (-115)
 
 # large motor releases the trapped tire
 front_largeMotor.run_angle(60, -148)
@@ -85,7 +85,7 @@ front_largeMotor.run_angle(60, -148)
 robot.straight (38)
 
 # robot turns so the wheel can get into the smaller target
-robot.turn (-33)
+robot.turn (-40)
 
 robot.stop (Stop.BRAKE)
 
@@ -93,20 +93,20 @@ robot.stop (Stop.BRAKE)
 robot.straight (-110)
 
 # robot turns towards the weight machine
-robot.turn (-32)
+robot.turn (-38)
 
 
 # going straight from row machine to weight machine
-robot.straight(498)
+robot.straight(503)
 
 # stopping for accuracy.
 robot.stop(Stop.BRAKE)
 
 # turning towards the weight machine.
-robot.turn(20)
+robot.turn(35)
 
 # robot goes straight to get closer to the weight machine
-robot.straight(78)
+robot.straight(80)
 
 # large motor going down to complete mission (weight machine).
 front_largeMotor.run_angle(120, 140)
@@ -138,3 +138,12 @@ robot.turn(60)
 
 # the large motor goes up to push the yellow cube down into the target area.
 front_largeMotor.run_angle(50, -50)
+
+robot.straight(-100)
+
+robot.turn(-45)
+robot.straight(900)
+
+robot.turn(25)
+
+robot.straight(700)
