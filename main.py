@@ -183,7 +183,7 @@ def BlueMission():
     line_sensor = ColorSensor(Port.S2)
     line_sensor1 = ColorSensor(Port.S3)
     robot = DriveBase(left_motor, right_motor, wheel_diameter, axle_track)
-
+    #robot.settings(200)
     #go front towards the step counter
     robot.straight(650)
     robot.stop(Stop.BRAKE)
@@ -193,7 +193,7 @@ def BlueMission():
     robot.settings(40)
 
     #slowly pushes the step counter by going back and front 2 times
-    robot.straight(120)
+    robot.straight(140)
     robot.stop(Stop.BRAKE)
     robot.straight(-45)
     robot.stop(Stop.BRAKE)
@@ -202,6 +202,7 @@ def BlueMission():
     robot.settings(100)
     robot.straight(-30)
     robot.stop(Stop.BRAKE)
+    robot.settings(200)
     #the robot then turns and goes backwards
     robot.turn(45)
     robot.straight(-100)
@@ -215,7 +216,8 @@ def BlueMission():
     large_motor.run_angle(50,200,then=Stop.HOLD, wait=False)
     left_motor.run_angle(50,-300,then=Stop.HOLD, wait=True)
     #the robot then goes straight towards that line
-    robot.straight(50)
+    #robot.straight(120)
+    robot.straight(130)
     robot.stop(Stop.BRAKE)
     #robot continues to go forwards until the left color sensor detects black
     while True:
@@ -231,6 +233,7 @@ def BlueMission():
             robot.stop(Stop.BRAKE)
             break
     #follows the line underneath the pull up bar until the leftsensor detects black
+        #follows the line underneath the pull up bar until the leftsensor detects black
     BLACK = 9
     WHITE = 85
     threshold = (BLACK + WHITE) / 2
@@ -248,7 +251,7 @@ def BlueMission():
         # Set the drive base speed and turn rate.
         robot.drive(DRIVE_SPEED, turn_rate)
         wait(10)
-        print(line_sensor.color())
+        print(line_sensor1.color())
         if line_sensor1.color() == Color.BLACK:
             robot.stop(Stop.BRAKE)
             break
@@ -256,29 +259,27 @@ def BlueMission():
     robot.turn(25)
     robot.straight(250)
     robot.straight(-50)
-    large_motor.run_angle(100,-65)
-    robot.straight(-35)
+    large_motor.run_angle(75,-65)
+    robot.straight(-60)
     #the robot then takes a turn (at the same time bringing the attatchment down) towards the slide mission and completes the mission
-    large_motor.run_angle(50,50,then=Stop.HOLD, wait=False)
-    robot.turn(-170)
-    robot.straight(200)
+    large_motor.run_angle(50,80,then=Stop.HOLD, wait=False)
+    robot.turn(-165)
+    robot.straight(175)
     large_motor.run_angle(300, -120, then=Stop.HOLD, wait=True)
-    robot.straight(-30)
-    large_motor.run_angle(100, 120, then=Stop.HOLD, wait=True)
+    robot.straight(-15)
+    large_motor.run_angle(550, 120, then=Stop.HOLD, wait=True)
     ## The robot moves straight towards the mission, getting ready to attempt to push the slide figures off once more. (In case it didn't work before.)
+    robot.straight(35)
+    large_motor.run_angle(550, -120, then=Stop.HOLD, wait=True)
+    ev3.speaker.beep()
+    large_motor.run_angle(300, 30, then=Stop.HOLD, wait=True)
     robot.straight(30)
-    large_motor.run_angle(300, -120, then=Stop.HOLD, wait=True)
-    robot.straight(-50)
-    #the robot then goes back to base after finishing all of the designated missions
-    robot.turn(60)
-    robot.straight(60)
-    robot.turn(30)
-    robot.straight(120)
-    robot.turn(-80)
-    robot.straight(500)
-    robot.turn(-70)
-    robot.straight(600)
-
+    #goes to collect the health unit near the basketball (goes back to base)
+    robot.straight(-200)
+    robot.turn(45)
+    ev3.speaker.beep()
+    robot.straight(1000)
+        
 def BlackandGreen():
 
     #!/usr/bin/env pybricks-micropython
@@ -437,7 +438,7 @@ def RedMission1():
 
     #####
 
-    BLACK = 9
+    BLACK = 11
     WHITE = 85
     threshold = (BLACK + WHITE) / 2
 
@@ -445,10 +446,10 @@ def RedMission1():
 
     robot.straight(320)
     robot.turn(110)
-    
+        
     while True:
         robot.drive(90,0)
-        if leftcolorsensor.reflection() <= 9:
+        if leftcolorsensor.reflection() <= 12:
             robot.stop(Stop.BRAKE)
             break        
 
@@ -457,7 +458,7 @@ def RedMission1():
     robot.straight(200)
 
     # Calculate the light threshold. Choose values based on your measurements.
-    BLACK = 6
+    BLACK = 9
     WHITE = 85
     threshold = (BLACK + WHITE) / 2
 
@@ -500,9 +501,10 @@ def RedMission1():
 
     while True:
         robot.drive(-80,0)
-        if leftcolorsensor.reflection() <= 10:
+        if rightcolorsensor.color() == Color.BLACK:
+            ev3.speaker.beep()
             robot.stop(Stop.BRAKE)
-            break 
+            break
 
     robot.straight(80)
     robot.turn(60)
@@ -524,22 +526,22 @@ def RedMission1():
     robot.straight(40)
     robot.turn(-85)
 
-    robot.straight(340)
-    robot.turn(165)
+    robot.straight(365)
+    robot.turn(155)
 
-    robot.straight(55)
-    Large_Motor.run_angle(-50,150,then = Stop.HOLD, wait = True)
+    robot.straight(54)
+    ##Large_Motor.run_angle(-40,150,then = Stop.HOLD, wait = True)
 
-    robot.straight(20)
+    ##robot.straight(20)
 
     Medium_Motor.run_angle(150,250,then = Stop.HOLD, wait = True)
-    robot.turn(70)
+    robot.turn(80)
     Medium_Motor.run_angle(-150,250,then = Stop.HOLD, wait = True)
-    robot.turn(-20)
-    robot.straight(-35)
+    robot.turn(-30)
+    robot.straight(-40)
     Medium_Motor.run_angle(150,250,then = Stop.HOLD, wait = True)
 
     robot.turn(30)
-    robot.straight(-130)
+    robot.straight(-330)
 
 waitButtons()
